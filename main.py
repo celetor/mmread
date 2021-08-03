@@ -25,11 +25,10 @@ def search(key: str, header: dict) -> list:
             info = bk.get('bookInfo')
             if info.get('format') == 'epub':
                 bk_list.append(info)
-        # bk_list = body['books']  # [bk['bookInfo'] for bk in body['books']]
         print(json.dumps(bk_list, ensure_ascii=False, indent=4))
         return bk_list
-    except BaseException as e:
-        print('search error: ', e)
+    except BaseException as err:
+        print('search error: ', err)
         if isinstance(body.get('books'), list):
             return body.get('books')
         else:
@@ -50,8 +49,8 @@ def detail(bid: str, header: dict) -> dict:
 
         print(json.dumps(body, ensure_ascii=False, indent=4))
         return body
-    except BaseException as e:
-        print('detail error: ', e)
+    except BaseException as err:
+        print('detail error: ', err)
         return {}
 
 
@@ -66,10 +65,6 @@ def toc(bid: str, header: dict) -> list:
             json.dump(body, f, ensure_ascii=False, indent=4)
 
         json_data = body['data']
-
-        # if json_data[0]['book']['format'] != 'epub':
-        #     print('本书不是epub，请选择epub格式的书籍下载')
-        #     return []
 
         # 把数组融合
         all_list = []
@@ -87,8 +82,8 @@ def toc(bid: str, header: dict) -> list:
         print(json.dumps(all_list, ensure_ascii=False, indent=4))
 
         return all_list
-    except BaseException as e:
-        print('toc error', e)
+    except BaseException as err:
+        print('toc error', err)
         return []
 
 
@@ -102,8 +97,8 @@ def zip_download(url: str, bid: str, idx: str, header: dict) -> dict:
             'encryptkey': encrypt_key,
             'path': f'./{bid}/zip/{idx}.zip'
         }
-    except BaseException as e:
-        print('zip_download error: ', e)
+    except BaseException as err:
+        print('zip_download error: ', err)
         return {}
 
 
@@ -116,8 +111,8 @@ def login_check(header: dict) -> bool:
         else:
             print('登录失败,请更新该目录下mmread.config文件中的请求头')
             return False
-    except BaseException as e:
-        print('login_check error: ', e)
+    except BaseException as err:
+        print('login_check error: ', err)
         return False
 
 
@@ -132,8 +127,8 @@ def get_header() -> dict:
             with open('./mmread.config', 'r', encoding='utf-8') as f:
                 header = json.load(f)
         return header
-    except BaseException as e:
-        print('get_header error: ', e)
+    except BaseException as err:
+        print('get_header error: ', err)
         return {}
 
 
@@ -154,19 +149,9 @@ def download_chapters(book_id: str, book_toc: list, headers: dict) -> None:
                 print(zip_content)
                 unzip_mm(headers.get('vid'), zip_content['encryptkey'], zip_content['path'],
                          f'./{book_id}/content')
-                # unzip_mm(headers.get('vid'), zip_content['encryptkey'], zip_content['path'],
-                #          f'./{book_id}/content/{ch["chapterIdx"]}')
-    except BaseException as e:
-        print('download_chapters error: ', e)
+    except BaseException as err:
+        print('download_chapters error: ', err)
     return None
-
-
-# 暂时不写了
-def re_download_image(bid: str) -> None:
-    path = f'./{bid}/content/Images'
-    if os.path.isdir(path):
-        img_list = os.listdir(path)
-    return
 
 
 def main() -> None:
