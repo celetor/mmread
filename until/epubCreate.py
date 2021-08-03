@@ -1,11 +1,11 @@
-from ebooklib import epub
 import random
 import json
 import os
 import hashlib
 import requests
-
 # import hashlib
+
+from ebooklib import epub
 from .constant import default_css
 
 
@@ -55,30 +55,6 @@ class EpubBookWriter:
 
         epub.write_epub(outputFileName, self.book, {})
 
-
-# def main():
-#     book = EpubBookWriter(
-#         "Economy, Society, and Public Policy", "The Core Team")
-#     baseUrl = "https://www.core-econ.org/espp/book/text/%02d.html"
-#     for i in range(1, 13):
-#         print("Writing Chapter %d" % i)
-#         url = baseUrl % i
-#         r = requests.get(url)
-#         r.encoding = "utf-8"
-#
-#         html = r.text
-#         soup = BeautifulSoup(html, features="lxml")
-#
-#         # Find <h1> element
-#         h1TagText = soup.find("h1").getText()
-#
-#         chapterTitle = re.sub(r'<strong>.*</strong>', "", str(h1TagText))
-#         content = str(soup.find("div", {"id": "content"}))
-#         book.addChapter(chapterTitle, content, i)
-#
-#     print("Finalizing book")
-#     book.finalizeBook("EconomySocietyAndPublicPolicy.epub")
-#     print("Done!")
 
 def export_epub(cache_path: str) -> None:
     try:
