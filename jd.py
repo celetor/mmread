@@ -8,6 +8,7 @@ import logging
 import time
 import urllib.parse
 
+# https://github.com/Zy143L/wskey
 # https://hellodns.coding.net/public/sign/jsign/git/files
 logging.basicConfig(level=logging.INFO, format='%(message)s')
 logger = logging.getLogger(__name__)
