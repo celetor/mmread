@@ -1,5 +1,6 @@
 /.idea/
 /dist/
-/mmread.config
+/mmread.json
 /test/
 /build/
+/output/

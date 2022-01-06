@@ -6,7 +6,7 @@ import requests
 # import hashlib
 
 from ebooklib import epub
-from .constant import default_css
+from .Constant import default_css
 
 
 class EpubBookWriter:
@@ -76,6 +76,9 @@ def export_epub(cache_path: str) -> None:
         # 下载图片
         image_url_list = []
         for pic in os.listdir(f'{cache_path}/content/Images'):
+            # 是封面就跳过
+            if pic == 'device_phone_frontcover.jpg':
+                continue
             try:
                 with open(f'{cache_path}/content/Images/{pic}', 'r', encoding='utf-8') as f:
                     image_url = f.read()
@@ -152,7 +155,7 @@ def export_epub(cache_path: str) -> None:
                               hashlib.md5(chapter_title.encode('utf-8')).hexdigest())
                 )
         book.set_toc(toc_list)
-        book.finalizeBook(f'{cache_path}/{title}.epub')
-        print(f'导出成功: {cache_path}/{title}.epub')
+        book.finalizeBook(f'./{title}.epub')
+        print(f'导出成功: ./{title}.epub')
     except BaseException as e:
         print('export_epub error: ', e)

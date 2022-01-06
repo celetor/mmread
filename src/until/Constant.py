@@ -1,3 +1,7 @@
+import os
+
+TMP_DIR = os.path.join(os.path.expanduser('~'), 'Documents', '.mmread')
+
 API = {
     'login_check': 'https://i.weread.qq.com/review/feeds?count=20&listMode=1&listType=1',
     'search': 'https://i.weread.qq.com/store/search?keyword={{key}}',
