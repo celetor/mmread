@@ -31,11 +31,11 @@ def main() -> None:
 
 if __name__ == '__main__':
     try:
-        _url = 'https://ghproxy.com/https://raw.githubusercontent.com/celetor/SourceGo/main/.github/scripts/mmread.json'
+        _url = 'https://cdn.jsdelivr.net/gh/celetor/SourceGo@main/.github/scripts/mmread.json'
         version_check = requests.get(_url).json().get('code')
     except BaseException as e:
         version_check = 0
-        print('version check error: ', e)
+        print('internet error')
     if int(version_check) > 4:
         print('版本V1.5, 校验通过')
         main()
