@@ -146,5 +146,5 @@ def run(headers):
     download_chapters(book_id, book_toc, headers)
     print('epub生成中...')
     export_epub(f'{TMP_DIR}/{book_id}')
-    # shutil.rmtree(TMP_DIR)
-    print('任务结束')
+    shutil.rmtree(TMP_DIR)
+    print('缓存清理完毕，任务结束')
