@@ -1,6 +1,6 @@
 import os, json
 import time
-from src import *
+from src import login_check, run, default_headers
 import requests
 
 
@@ -33,7 +33,7 @@ if __name__ == '__main__':
     try:
         _url = 'https://cdn.jsdelivr.net/gh/celetor/SourceGo@main/.github/scripts/mmread.json'
         version_check = requests.get(_url).json().get('code')
-    except BaseException as e:
+    except Exception:
         version_check = 0
         print('internet error')
     if int(version_check) > 4:
