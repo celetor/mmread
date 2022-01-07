@@ -6,7 +6,7 @@ import requests
 # import hashlib
 
 from ebooklib import epub
-from .Constant import default_css
+from .Constant import default_css, WORK_LOG
 
 
 class EpubBookWriter:
@@ -68,7 +68,7 @@ def export_epub(cache_path: str) -> None:
             with open(f'{cache_path}/content/Images/device_phone_frontcover.jpg', 'rb') as f:
                 book.set_cover('Images/device_phone_frontcover.jpg', f.read())
         except BaseException as err:
-            print('cover set error: ', err)
+            WORK_LOG.error(f'cover set error: {err}')
 
         with open(f'{cache_path}/toc.json', 'r', encoding='utf-8') as f:
             toc_info = json.load(f).get('data')
@@ -90,7 +90,7 @@ def export_epub(cache_path: str) -> None:
                     res = requests.get(image_url).content
                     f.write(res)
             except BaseException as err:
-                print('get image url error: ', pic, err)
+                WORK_LOG.error(f'get image url error: {pic}, {err}')
 
         # 替换图片链接
         for chap in os.listdir(f'{cache_path}/content/Text'):
@@ -156,6 +156,6 @@ def export_epub(cache_path: str) -> None:
                 )
         book.set_toc(toc_list)
         book.finalizeBook(f'./{title}.epub')
-        print(f'导出成功: ./{title}.epub')
+        WORK_LOG.info(f'导出成功: ./{title}.epub')
     except BaseException as e:
-        print('export_epub error: ', e)
+        WORK_LOG.error(f'export_epub error: {e}')

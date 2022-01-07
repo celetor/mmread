@@ -1,5 +1,6 @@
-from .Aes import aes_decode
 import zipfile
+from .Aes import aes_decode
+from .Constant import WORK_LOG
 
 
 # 获取AES解密的key和iv
@@ -30,11 +31,11 @@ def unzip_file(zip_path: str, password: str = None, folder_path: str = None):
             zip_file.extract(f, folder_path, pwd=password.encode("utf-8"))  # 循环解压文件到指定目录
         zip_file.close()  # 关闭文件，必须有，释放内存
     except Exception as e:
-        print('Unzip Error', e)
+        WORK_LOG.error(f'Unzip Error: {e}')
 
 
 # 解压微信阅读出版书
 def unzip_mm(vid: str, encrypt_key: str, zip_path: str, folder_path: str = None):
     pwd = get_unzip_key(vid, encrypt_key)
     unzip_file(zip_path, pwd, folder_path)
-    print(f'{zip_path} 解压成功,密码: {pwd}')
+    WORK_LOG.info(f'{zip_path} 解压成功,密码: {pwd}')

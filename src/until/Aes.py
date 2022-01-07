@@ -1,4 +1,5 @@
 import base64
+from .Constant import WORK_LOG
 
 # pip install pycryptodomex
 # https://pycryptodome.readthedocs.io/en/latest/src/installation.html#windows-from-sources-python-3-5-and-newer
@@ -19,7 +20,7 @@ def aes_encode(data: str, str_key: str, str_iv: str, mode: int = AES.MODE_CBC) -
         encrypted_text = str(result, encoding='utf-8').replace('\n', '')
         return encrypted_text
     except Exception as e:
-        print('AES Encode Error: ', e)
+        WORK_LOG.error(f'AES Encode Error: {e}')
         return ''
 
 
@@ -33,5 +34,5 @@ def aes_decode(data: str, str_key: str, str_iv: str, mode: int = AES.MODE_CBC) -
         decrypted_text = str(una_pkcs7, encoding='utf-8')
         return decrypted_text
     except Exception as e:
-        print('AES Decode Error: ', e)
+        WORK_LOG.error(f'AES Decode Error: {e}')
         return ''

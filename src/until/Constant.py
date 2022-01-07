@@ -1,6 +1,8 @@
 import os
+from .LogUntils import Logger
 
 TMP_DIR = os.path.join(os.path.expanduser('~'), 'Documents', '.mmread')
+WORK_LOG = Logger('./mmread.log', level='debug').logger
 
 API = {
     'login_check': 'https://i.weread.qq.com/review/feeds?count=20&listMode=1&listType=1',
