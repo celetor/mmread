@@ -92,7 +92,8 @@ class WorkThread(QThread):
         if book_info['format'] == 'epub':
             export_epub(f'{TMP_DIR}/{book_id}')
         else:
-            content = [f'书名:{book_info["title"]}\n作者:{book_info["author"]}\n封面:{book_info["cover"]}\n简介:{book_info["intro"]}']
+            content = [
+                f'书名:{book_info["title"]}\n作者:{book_info["author"]}\n封面:{book_info["cover"]}\n简介:{book_info["intro"]}']
             bk_list = os.listdir(f'{TMP_DIR}/{book_id}/zip')
             bk_list.sort(key=lambda x: int(re.match(r'(\d+)\.txt', x).group(1)))
             for ch in book_toc:
@@ -161,12 +162,24 @@ class AppMainWin(QMainWindow, Ui_MainWindow):
                 self.pushButton_2.setEnabled(True)
                 self.pushButton.setEnabled(False)
         elif key == 1:
-            self.book_list = msg
+            self.clear_item()
+            self.book_list = []
             for bk in msg:
+                if bk.get('bookInfo') is not None:
+                    bk = bk.get('bookInfo')
+                if bk.get('bookId') is None:
+                    continue
                 item = QListWidgetItem(self.listWidget)
                 name = bk['title']
                 author = bk['author']
                 ext = bk['format']
+                self.book_list.append({
+                    'bookId': bk['bookId'],
+                    'title': bk['title'],
+                    'author': bk['author'],
+                    'intro': bk['intro'],
+                    'cover': bk['cover']
+                })
 
                 widget = ItemWidget(name, author, ext, item, self.listWidget)
                 # 绑定删除信号
@@ -199,6 +212,17 @@ class AppMainWin(QMainWindow, Ui_MainWindow):
         self.statusbar.showMessage(f'{name} 下载中...')
         self.thread_1.set_object({'index': 2, 'name': name, 'bid': bid})
         self.thread_1.start()
+
+    def clear_item(self):
+        # 清空所有Item
+        for _ in range(self.listWidget.count()):
+            # 删除item
+            # 一直是0的原因是一直从第一行删,删掉第一行后第二行变成了第一行
+            # 这个和删除list [] 里的数据是一个道理
+            item = self.listWidget.takeItem(0)
+            # 删除widget
+            self.listWidget.removeItemWidget(item)
+            del item
 
 
 if __name__ == '__main__':
