@@ -13,15 +13,15 @@ API = {
 }
 
 default_headers = {
-    'accesstoken': 'input',
-    'appver': 'input',
-    'baseapi': 'input',
-    'basever': 'input',
-    'beta': 'input',
-    'channelid': 'input',
-    'osver': 'input',
-    'user-agent': 'input',
-    'vid': 'input'
+    "accesstoken": "input",
+    "vid": "input",
+    "baseapi": "30",
+    "appver": "4.6.5.10145867",
+    "user-agent": "WeRead/4.6.5 WRBrand/other Dalvik/2.1.0 (Linux; U; Android 11; HUAWEI2012 Build/RP1A.201005.001)",
+    "osver": "11",
+    "beta": "0",
+    "channelid": "9",
+    "basever": "4.6.5.10145867"
 }
 
 default_css = '''/*theme -> default_epub.css*/
