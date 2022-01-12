@@ -1,2 +1,2 @@
-from .ui import Ui_MainWindow
+from .ui import *
 from .until import *

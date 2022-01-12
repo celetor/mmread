@@ -6,8 +6,9 @@ import requests
 import re
 
 from PyQt5.Qt import QThread, pyqtSignal
+from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QLineEdit, QPushButton, QListWidgetItem
+from PyQt5.QtWidgets import QApplication, QMainWindow, QListWidgetItem
 
 from src import *
 
@@ -41,21 +42,6 @@ def version_check():
     else:
         WORK_LOG.info('软件版本校验失败，请更新后重试...')
         return False
-
-
-class ItemWidget(QWidget):
-    itemDeleted = pyqtSignal(QListWidgetItem)
-
-    def __init__(self, name, author, ext, item, *args, **kwargs):
-        super(ItemWidget, self).__init__(*args, **kwargs)
-        self._item = item  # 保留list item的对象引用
-        layout = QHBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.addWidget(QLineEdit(f'{ext} 《{name}》 - {author}', self))
-        layout.addWidget(QPushButton('下载', self, clicked=self.download))
-
-    def download(self):
-        self.itemDeleted.emit(self._item)
 
 
 # 工作线程
@@ -142,6 +128,8 @@ class AppMainWin(QMainWindow, Ui_MainWindow):
         self.signal_connect_slot()
 
     def init(self):
+        self.listWidget.setIconSize(QSize(300, 200))
+        self.listWidget.setSpacing(5)  # item间距(上下左右)
         self.pushButton.setEnabled(False)
 
     def signal_connect_slot(self):
@@ -170,18 +158,17 @@ class AppMainWin(QMainWindow, Ui_MainWindow):
                 if bk.get('bookId') is None:
                     continue
                 item = QListWidgetItem(self.listWidget)
-                name = bk['title']
-                author = bk['author']
-                ext = bk['format']
-                self.book_list.append({
+                bk_info = {
                     'bookId': bk['bookId'],
                     'title': bk['title'],
                     'author': bk['author'],
                     'intro': bk['intro'],
-                    'cover': bk['cover']
-                })
+                    'cover': bk['cover'],
+                    'format': bk['format']
+                }
+                self.book_list.append(bk_info)
 
-                widget = ItemWidget(name, author, ext, item, self.listWidget)
+                widget = ItemWidget(bk_info, item, self.listWidget)
                 # 绑定删除信号
                 widget.itemDeleted.connect(self.download_book)
                 self.listWidget.setItemWidget(item, widget)
