@@ -91,6 +91,7 @@ class WorkThread(QThread):
                     con = f.readlines()
                     f.close()
                     con[0] = re.sub(r'info\.txt.*ustar\s*', '', con[0]).strip(b'\x00'.decode())
+                    con[-1] = con[-1].strip(b'\x00'.decode())
                     con = ''.join(con)
                 else:
                     con = ''
