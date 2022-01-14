@@ -11,8 +11,9 @@ class ItemWidget(QWidget):
     def __init__(self, book_info, item, *args, **kwargs):
         super(ItemWidget, self).__init__(*args, **kwargs)
         self._item = item  # 保留list item的对象引用
-        pixmap = QPixmap()
-        pixmap.loadFromData(requests.get(book_info['cover']).content)
+        # pixmap = QPixmap()
+        # pixmap.loadFromData(requests.get(book_info['cover']).content)
+        pixmap = QPixmap('./resource/cover.jpg')
         self._item.setIcon(QIcon(pixmap))
 
         # 总部局-垂直
