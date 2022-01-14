@@ -90,8 +90,7 @@ class WorkThread(QThread):
                     f = open(path, 'r', encoding='utf-8')
                     con = f.readlines()
                     f.close()
-                    if len(con) > 2:
-                        con = con[1:]
+                    con[0] = re.sub(r'info\.txt.*ustar\s*', '', con[0]).strip(b'\x00'.decode())
                     con = ''.join(con)
                 else:
                     con = ''
