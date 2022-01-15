@@ -1,12 +1,8 @@
 [Adblock Plus 2.0]
 ! Title: ad Filter List
-! Expires: 1 days (update frequency)
 ! Version: 1
 ! Last modified: 2022.1.15
 ! Homepage: https://github.com/celetor
-! License: https://mit-license.org/
-! Description: This filter disables browser based miners such as coin-hive
-!-------------------------------------------------------------------------------
 
-! Third Party blocking ---------------------------------------------------------
-||static.zhihu.com/heifetz/main.signflow$domain=zhihu.com,important
+!||static.zhihu.com/heifetz/main.signflow$domain=zhihu.com,important
+||static.zhihu.com/heifetz/main.signflow$domain=zhihu.com
