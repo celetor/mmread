@@ -25,3 +25,13 @@
    # 重启网络
    service network restart
    ```
+
+## adb
+ * 冻结[app](https://ailitonia.com/archives/android%E6%89%8B%E6%9C%BA%E4%BD%BF%E7%94%A8adb%E5%86%BB%E7%BB%93-%E7%A6%81%E7%94%A8%E7%B3%BB%E7%BB%9F%E5%BA%94%E7%94%A8/)
+ * 打开USB调试
+ * 连接手机 `adb devices`
+ * 进入shell `adb shell`
+ * 查看app列表 `pm list packages`
+ * 查看冻结app列表 `pm list packages -d`
+ * 启用app `pm enable <PACKAGE_OR_COMPONENT>`
+ * 冻结app `pm disable-user <PACKAGE_OR_COMPONENT>`
