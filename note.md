@@ -37,3 +37,8 @@
  * 冻结app `pm disable-user <PACKAGE_OR_COMPONENT>`
  * 退出shell `exit`
  * 重启 `adb reboot`
+
+## root
+ * https://yun.daxiaamu.com/
+ * https://www.daxiaamu.com/
+ * https://optool.daxiaamu.com/optool/
