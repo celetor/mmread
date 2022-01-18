@@ -26,7 +26,7 @@
    service network restart
    ```
 
-## adb
+## adb[下载](https://www.xda-developers.com/install-adb-windows-macos-linux/)
  * 冻结[app](https://ailitonia.com/archives/android%E6%89%8B%E6%9C%BA%E4%BD%BF%E7%94%A8adb%E5%86%BB%E7%BB%93-%E7%A6%81%E7%94%A8%E7%B3%BB%E7%BB%9F%E5%BA%94%E7%94%A8/)
  * 打开USB调试
  * 连接手机 `adb devices`
