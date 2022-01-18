@@ -35,3 +35,5 @@
  * 查看冻结app列表 `pm list packages -d`
  * 启用app `pm enable <PACKAGE_OR_COMPONENT>`
  * 冻结app `pm disable-user <PACKAGE_OR_COMPONENT>`
+ * 退出shell `exit`
+ * 重启 `adb reboot`
