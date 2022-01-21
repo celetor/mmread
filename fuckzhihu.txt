@@ -1,8 +1,0 @@
-[Adblock Plus 2.0]
-! Title: ad Filter List
-! Version: 1
-! Last modified: 2022.1.15
-! Homepage: https://github.com/celetor
-
-!||static.zhihu.com/heifetz/main.signflow$domain=zhihu.com,important
-||static.zhihu.com/heifetz/main.signflow$domain=zhihu.com
