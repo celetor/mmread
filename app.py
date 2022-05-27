@@ -75,7 +75,8 @@ class WorkThread(QThread):
         book_info = detail(book_id, self.headers)
         book_toc = toc(book_id, self.headers)
         msg = '下载完成'
-        if download_chapters(book_info, book_toc, self.headers):
+        rst = download_chapters(book_info, book_toc, self.headers)
+        if rst:
             if book_info['format'] == 'epub':
                 export_epub(f'{TMP_DIR}/{book_id}')
             else:
@@ -177,7 +178,7 @@ class AppMainWin(QMainWindow, Ui_MainWindow):
                 self.listWidget.setItemWidget(item, widget)
         else:
             self.statusbar.showMessage(msg)
-            print(msg)
+            # print(msg)
 
     def on_check_clicked(self):
         self.thread_1.set_object({'index': 0})
