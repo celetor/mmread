@@ -81,6 +81,9 @@ def toc(bid: str, header: dict) -> list:
 def zip_download(url: str, bid: str, idx: str, header: dict, format: str) -> dict:
     try:
         res = requests.get(url, timeout=15000, headers=header)
+        if res.status_code > 400:
+            WORK_LOG.error(f'zip_download error: 状态码{res.status_code}')
+            return {}
         encrypt_key = res.headers.get('encryptkey')
         with open(f'{TMP_DIR}/{bid}/zip/{idx}.{format}', 'wb') as f:
             f.write(res.content)
@@ -90,7 +93,7 @@ def zip_download(url: str, bid: str, idx: str, header: dict, format: str) -> dic
         return {}
 
 
-def download_chapters(book_info: dict, book_toc: list, headers: dict) -> None:
+def download_chapters(book_info: dict, book_toc: list, headers: dict) -> bool:
     book_id = book_info['bookId']
     format = book_info['format']
 
@@ -100,8 +103,10 @@ def download_chapters(book_info: dict, book_toc: list, headers: dict) -> None:
             WORK_LOG.info(f"全书下载")
             zip_content = zip_download(ch['all_chapter'], book_id, str(ch['chapterIdx']), headers, format)
             WORK_LOG.info(zip_content)
-            unzip_mm(headers.get('vid'), zip_content['encryptkey'], zip_content['path'],
-                     f'{TMP_DIR}/{book_id}/content')
+            if zip_content.get('path'):
+                unzip_mm(headers.get('vid'), zip_content['encryptkey'], zip_content['path'],
+                         f'{TMP_DIR}/{book_id}/content')
+                return True
         else:
             for ch in book_toc:
                 WORK_LOG.info(f"第{ch['chapterIdx']}章下载")
@@ -109,10 +114,11 @@ def download_chapters(book_info: dict, book_toc: list, headers: dict) -> None:
                 WORK_LOG.info(zip_content)
                 # unzip_mm(headers.get('vid'), zip_content['encryptkey'], zip_content['path'],
                 #          f'{TMP_DIR}/{book_id}/content')
+            return True
     except BaseException as err:
         WORK_LOG.error(f'download_chapters error: {err}')
 
-    return None
+    return False
 
 
 def login_check(header: dict) -> bool:

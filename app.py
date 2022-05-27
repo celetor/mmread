@@ -74,34 +74,37 @@ class WorkThread(QThread):
 
         book_info = detail(book_id, self.headers)
         book_toc = toc(book_id, self.headers)
-        download_chapters(book_info, book_toc, self.headers)
-        if book_info['format'] == 'epub':
-            export_epub(f'{TMP_DIR}/{book_id}')
+        msg = '下载完成'
+        if download_chapters(book_info, book_toc, self.headers):
+            if book_info['format'] == 'epub':
+                export_epub(f'{TMP_DIR}/{book_id}')
+            else:
+                content = [
+                    f'书名:{book_info["title"]}\n作者:{book_info["author"]}\n封面:{book_info["cover"]}\n简介:{book_info["intro"]}']
+                bk_list = os.listdir(f'{TMP_DIR}/{book_id}/zip')
+                bk_list.sort(key=lambda x: int(re.match(r'(\d+)\.txt', x).group(1)))
+                for ch in book_toc:
+                    idx = ch['chapterIdx']
+                    content.append(f'第{idx}章 {ch["title"]}\n　　字数:{ch["wordCount"]}')
+                    path = f'{TMP_DIR}/{book_id}/zip/{idx}.txt'
+                    if os.path.isfile(path):
+                        f = open(path, 'r', encoding='utf-8')
+                        con = f.readlines()
+                        f.close()
+                        con[0] = re.sub(r'info\.txt.*ustar\s*', '', con[0]).strip(b'\x00'.decode())
+                        con[-1] = con[-1].strip(b'\x00'.decode())
+                        con = ''.join(con)
+                    else:
+                        con = ''
+                    content.append(con)
+                content = '\n'.join(content)
+                f = open(f'./{book_info["title"]}.txt', 'w', encoding='utf-8')
+                f.write(content)
+                f.close()
         else:
-            content = [
-                f'书名:{book_info["title"]}\n作者:{book_info["author"]}\n封面:{book_info["cover"]}\n简介:{book_info["intro"]}']
-            bk_list = os.listdir(f'{TMP_DIR}/{book_id}/zip')
-            bk_list.sort(key=lambda x: int(re.match(r'(\d+)\.txt', x).group(1)))
-            for ch in book_toc:
-                idx = ch['chapterIdx']
-                content.append(f'第{idx}章 {ch["title"]}\n　　字数:{ch["wordCount"]}')
-                path = f'{TMP_DIR}/{book_id}/zip/{idx}.txt'
-                if os.path.isfile(path):
-                    f = open(path, 'r', encoding='utf-8')
-                    con = f.readlines()
-                    f.close()
-                    con[0] = re.sub(r'info\.txt.*ustar\s*', '', con[0]).strip(b'\x00'.decode())
-                    con[-1] = con[-1].strip(b'\x00'.decode())
-                    con = ''.join(con)
-                else:
-                    con = ''
-                content.append(con)
-            content = '\n'.join(content)
-            f = open(f'./{book_info["title"]}.txt', 'w', encoding='utf-8')
-            f.write(content)
-            f.close()
+            msg = '下载失败'
 
-        self.signal.emit(2, f'{name} 下载完成')
+        self.signal.emit(2, f'{name} {msg}')
 
     def run(self):
         index = self.obj['index']
@@ -213,9 +216,8 @@ class AppMainWin(QMainWindow, Ui_MainWindow):
 
 
 if __name__ == '__main__':
-    if version_check():
-        app = QApplication(sys.argv)
-        window = AppMainWin()  # 类名,注意要和自己定义的类名一致。
-        window.setWindowIcon(QIcon(os.path.join(os.getcwd(), "resource", "ic_launcher.ico")))
-        window.show()
-        sys.exit(app.exec_())
+    app = QApplication(sys.argv)
+    window = AppMainWin()  # 类名,注意要和自己定义的类名一致。
+    window.setWindowIcon(QIcon(os.path.join(os.getcwd(), "resource", "ic_launcher.ico")))
+    window.show()
+    sys.exit(app.exec_())

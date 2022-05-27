@@ -3,7 +3,7 @@ python -m nuitka --standalone --mingw64 ^
 --nofollow-imports --follow-import-to=src ^
 --include-data-dir=resource=resource ^
 --windows-icon-from-ico=resource/ic_launcher.ico ^
---plugin-enable=qt-plugins ^
+--enable-plugin=pyqt5 ^
 --include-qt-plugins=sensible,styles ^
 --windows-company-name="Github Celeter" ^
 --windows-product-name=mmread-download ^
